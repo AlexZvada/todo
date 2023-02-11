@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="note_list">
+        <div class="title_wrapper">
+            <div class="title">Title</div>
+            <div class="status_wrapper">
+                Status
+                <p class="status_text">(click on note status to change it)</p>
+            </div>
+            <div class="text">
+                Text
+                <p class="status_text">(click on note text to change it)</p>
+            </div>
+        </div>
+    </div>
+    <div class="btn_wrapper">
+        <button class="add_btn btn">Add new note</button>
+        <button class="remove_btn btn">clear all</button>
+    </div>
+    <script>
+        class List {
+            constructor() {
+                this.list = [];
+                if (Array.isArray(JSON.parse(localStorage.getItem('list')))) {
+                    this.list = JSON.parse(localStorage.getItem('list'))
+                        .map(el => {
+                            this.writeToHTML(el.title, el.text, el.status)
+                            return new Note(el.title, el.text, el.status);
+                        });
+                }
+            }
+
+            create(note) {
+                const index = this.#searcNoteList(this.list, note.title);
+                if (index !== -1) return;
+                this.writeToHTML(note.title, note.text);
+                this.list.push(note);
+                localStorage.setItem('list', JSON.stringify(this.list));
+
+            }
+
+            remove(index) {
+                this.list.splice(index, 1);
+                localStorage.setItem('list', JSON.stringify(this.list));
+            }
+
+            // getInfo() {
+            //     const titleCounter = {
+            //         all: this.list.length,
+            //         done: 0,
+            //         toDo: 0
+            //     };
+            //     this.list.forEach(el => {
+            //         if (el.status === false) {
+            //             titleCounter.toDo += 1;
+            //         } else titleCounter.done += 1;
+            //     });
+            //     alert(titleCounter);
+            //     return titleCounter;
+            // }
+
+
+            changeText(index, text) {
+                this.list[index].edit(text)
+                localStorage.setItem('list', JSON.stringify(this.list));
+            }
+
+            changeStatus(index) {
+                this.list[index].changeNoteStatus();
+                localStorage.setItem('list', JSON.stringify(this.list));
+            }
+
+            writeToHTML(title, text, status) {
+                const st = status? 'done' : 'not done';
+                const note = document.createElement('div');
+                const noteTitle = document.createElement('div');
+                const removeBtn = document.createElement('button');
+                const noteText = document.createElement('div');
+                const noteStatus = document.createElement('div');
+
+                note.setAttribute('class', 'note_row');
+                if (st === 'done') {
+                    note.setAttribute('id', 'done')
+                }
+                noteTitle.setAttribute('class', 'note_title');
+                noteText.setAttribute('class', 'note_text');
+                noteStatus.setAttribute('class', 'note_status')
+                removeBtn.setAttribute('class', 'remove_note_btn');
+
+                noteTitle.textContent = title;
+                noteText.textContent = text;
+                noteStatus.textContent = st;
+                removeBtn.textContent = 'Remove note';
+
+                note.appendChild(noteTitle);
+                note.appendChild(noteStatus);
+                note.appendChild(noteText);
+                note.appendChild(removeBtn);
+                noteList.appendChild(note);
+            }
+
+            #searcNoteList(arr, title) {
+                return arr.findIndex(el => el.title === title);
+            }
+        }
+
+        class Note {
+
+            constructor(title, text, status) {
+                this.title = title;
+                this.text = text;
+                this.status = status ? status : false;
+            }
+
+            edit(newText) {
+                this.text = newText;
+            }
+
+            changeNoteStatus() {
+                if (!this.status) {
+                    this.status = true;
+                } else { this.status = false }
+                localStorage.setItem('list', JSON.stringify(this.list));
+            }
+        }
+        const noteList = document.querySelector('.note_list');
+        const createBtn = document.querySelector('.add_btn');
+        const clearBtn = document.querySelector('.remove_btn');
+        const changeNoteList = noteList.onclick = function (event) {
+            let target = event.target;
+            if (target.tagName === 'BUTTON') {
+                const acces = confirm('Do you realy want to delete note?');
+                if (!acces) return;
+                let note = event.target.closest('.note_row');
+                const notes = document.querySelectorAll('.note_row');
+                notes.forEach((el, index) => {
+                    if (el === note) {
+                        toDo.remove(index)
+                    }
+                });
+                noteList.removeChild(note);
+            }
+            if (target.className === 'note_status') {
+                target.textContent = target.textContent === 'done' ? 'not done' : 'done';
+                const note = target.closest('.note_row');
+                note.id = note.id === 'done' ? 'not done' : 'done';
+                const notes = document.querySelectorAll('.note_row');
+                notes.forEach((el, index) => {
+                    if (el === note) {
+                        toDo.changeStatus(index)
+                    }
+                });
+            }
+            if (target.className === 'note_text') {
+                target.textContent = prompt('Enter new text')
+                const note = target.closest('.note_row');
+                const notes = document.querySelectorAll('.note_row');
+                notes.forEach((el, index) => {
+                    if (el === note) {
+                        toDo.changeText(index, target.textContent);
+                    }
+                });
+            }
+
+
+        };
+        createBtn.addEventListener("click", () => {
+            const title = prompt('enter title of note');
+            const text = prompt('enter text of note');
+            toDo.create(new Note(title, text))
+        })
+
+        clearBtn.addEventListener('click', () => {
+            const acces = confirm('Do you realy want to delete all?');
+            if (!acces) return;
+            const clear = document.querySelectorAll('.note_row');
+            clear.forEach(el => noteList.removeChild(el));
+            localStorage.clear();
+        })
+
+
+
+        const toDo = new List();
+        console.log(toDo.list);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,125 @@
+body {
+    background-color: rgb(226, 234, 241);
+}
+
+h1 {
+    text-align: center;
+    font-size: 40px;
+    color: rgb(102, 17, 151);
+}
+
+/* btn */
+.btn_wrapper {
+    width: max-content;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.btn {
+    padding: 10px 8px 8px 10px;
+    border-radius: 10px;
+}
+
+.add_btn {
+    background-color: rgba(58, 233, 145, 0.6);
+    font-size: 16px;
+    border: none;
+}
+
+.add_btn:hover {
+    background-color: rgba(20, 231, 126, 0.8);
+}
+
+.remove_btn {
+    background-color: rgba(235, 90, 90, 0.6);
+    font-size: 16px;
+    border: none;
+}
+
+.remove_btn:hover {
+    background-color: rgba(240, 36, 36, 0.9);
+}
+
+.remove_note_btn {
+    font-size: 16px;
+    padding: 6px 3px 3px 6px;
+    border-radius: 10px;
+    border: 0;
+    background-color: rgba(235, 90, 90, 0.6);
+}
+
+.remove_note_btn:hover {
+    background-color: rgba(240, 36, 36, 0.9);
+}
+
+/* title */
+.title_wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.title {
+    width: 20%;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+}
+.status_wrapper{
+    width: 10%;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+}
+.status_text{
+    font-size: 10px;
+}
+
+.text {
+    width: 55%;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* note list */
+.note_list {
+    background-color: aliceblue;
+    border-radius: 30px;
+    margin: 0 auto;
+    padding: 0 0 30px;
+    width: 80%;
+}
+
+.note_row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    background-color: rgba(55, 133, 211, 0.5);
+    border-radius: 30px;
+    padding: 10px 30px;
+}
+
+.note_title {
+    width: 30%;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.note_text {
+    width: 60%;
+    font-size: 26px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.note_status {
+    width: 10%;
+    font-size: 26px;
+    text-align: center;
+    cursor: pointer;
+}
+#done{
+    background-color: rgb(13, 163, 26) !important; 
+}
